@@ -35,11 +35,11 @@ jobs:
       run: |
         python3 fileprocess.py ${SPINNAKER_VERSION}.yml  ${TAG_FILE} ${BOM_DIR} 
         tree ${BOM_DIR}
-        mkdir -p default/service-settings
-        for i in $(cat ${TAG_FILE}); do
-          file_name=$(echo $i | awk -F ':' {'print$1'})
-          echo "artifactId: gcr.azk8s.cn/spinnaker-marketplace/$i" > default/service-settings/$file_name.yml
-        done
+        # mkdir -p default/service-settings
+        # for i in $(cat ${TAG_FILE}); do
+        #   file_name=$(echo $i | awk -F ':' {'print$1'})
+        #   echo "artifactId: gcr.azk8s.cn/spinnaker-marketplace/$i" > default/service-settings/$file_name.yml
+        # done
 
     - name: 03- Collection files
       run : |
@@ -47,9 +47,10 @@ jobs:
         mv ${BOM_DIR} artifacts/${SPINNAKER_VERSION}/
         mkdir -p artifacts/${SPINNAKER_VERSION}/${BOM_DIR}/bom
         mv ${SPINNAKER_VERSION}.yml artifacts/${SPINNAKER_VERSION}/${BOM_DIR}/bom/ 
-        mv default artifacts/${SPINNAKER_VERSION}/
-        echo "====look config======"
-        ls -a /home/spinnaker/.hal/config
+        # mv default artifacts/${SPINNAKER_VERSION}/
+        mv halyard.yaml artifacts/${SPINNAKER_VERSION}/
+        mv halyard.sh artifacts/${SPINNAKER_VERSION}/
+        mv ${TAG_FILE} artifacts/${SPINNAKER_VERSION}/
     
     - uses: actions/upload-artifact@v2
       with: 
