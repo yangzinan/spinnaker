@@ -39,7 +39,7 @@ jobs:
         docker exec -u root halyard chmod +x /opt/getbom.sh
         docker exec -u root halyard sh /opt/getbom.sh ${SPINNAKER_VERSION}
         docker cp halyard:/opt/${SPINNAKER_VERSION}.yml ./${SPINNAKER_VERSION}.yml
-        docker exec -u root halyard ls /root/.hal/
+        docker exec -u root halyard ls -a ~/
         mkdir -p ${BOM_DIR}
 
     - name: 02-1-获取gcr.io镜像
