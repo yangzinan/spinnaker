@@ -39,7 +39,7 @@ jobs:
         docker exec -u root halyard chmod +x /opt/getbom.sh
         docker exec -u root halyard sh /opt/getbom.sh ${SPINNAKER_VERSION}
         docker cp halyard:/opt/${SPINNAKER_VERSION}.yml ./${SPINNAKER_VERSION}.yml
-        docker exec -u root halyard cat .hal/default/service-settings/*
+        docker exec -u root halyard ls .hal/
         mkdir -p ${BOM_DIR}
 
     - name: 02-1-获取gcr.io镜像
@@ -53,5 +53,5 @@ jobs:
         for tag in $(cat ${TAG_FILE})
         do 
            echo  -e "\033[32m  ---> pull ---> ${REGISTRY_URL}${tag} \033[0m"
-           docker pull ${REGISTRY_URL}${tag}
+          #  docker pull ${REGISTRY_URL}${tag}
         done
