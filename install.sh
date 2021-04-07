@@ -13,6 +13,11 @@ MINIO_ACCESS_ID="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
 ## 下载镜像
 function GetImages(){
     echo -e "\033[43;34m =====GetImg===== \033[0m"
+    for i in $(cat tagfile.txt); do
+        docker pull gcr.azk8s.cn/spinnaker-marketplace/${i}
+        docker tag ${REGISTRY}/${i}
+        docker push ${REGISTRY}/${i}
+    done
     
 }
 
