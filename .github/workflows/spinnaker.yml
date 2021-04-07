@@ -17,17 +17,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
-      
-    ##
-#     - name: 01-安装Halyard部署工具
-#       run: |
-#         chmod +x ./InstallHalyard.sh
-#         ls 
-#         sleep 2
-#         sudo bash -x InstallHalyard.sh --user runner -y
-#         sleep 5
-#         hal -v    
-#     ## 
+
     - name: 01- Get bom file
       run: |
         docker pull registry.cn-beijing.aliyuncs.com/spinnaker-cd/halyard:1.32.0
@@ -48,7 +38,7 @@ jobs:
         mkdir -p default/service-settings
         for i in $(cat ${TAG_FILE}); do
           file_name=$(echo $i | awk -F ':' {'print$1'})
-          echo "artifactId: registry.cn-beijing.aliyuncs.com/niu-idc/$i" > default/service-settings/$file_name.yml
+          echo "artifactId: gcr.azk8s.cn/spinnaker-marketplace/$i" > default/service-settings/$file_name.yml
         done
 
     - name: 03- Collection files
@@ -57,7 +47,7 @@ jobs:
         mv ${BOM_DIR} artifacts/${SPINNAKER_VERSION}/
         mkdir -p artifacts/${SPINNAKER_VERSION}/${BOM_DIR}/bom
         mv ${SPINNAKER_VERSION}.yml artifacts/${SPINNAKER_VERSION}/${BOM_DIR}/bom/ 
-        mv default artifacts/
+        mv default artifacts/${SPINNAKER_VERSION}/
     
     - uses: actions/upload-artifact@v2
       with: 

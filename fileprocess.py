@@ -10,7 +10,6 @@ class SpinnakerToDo(object):
         self.tagFile = sys.argv[2]
         self.bomDir = sys.argv[3]
         self.gitRepo = "https://raw.githubusercontent.com/spinnaker"
-        #self.exceptServices = ["defaultArtifact","monitoring-third-party","monitoring-daemon"]
         self.exceptServices = ["defaultArtifact","monitoring-third-party"]
 
 
@@ -84,31 +83,9 @@ class SpinnakerToDo(object):
                     ## 检查文件
                     os.system("ls %s/%s" %(self.bomDir, s ))
                     os.system("ls %s/%s/%s" %(self.bomDir, s, serviceVersion ))
-    
-    ## 更新bom版本文件中的版本号为local:
-    def UpdateBomVersionFile(self):
-        print("======> write yaml data <======")
-        file = open(self.filePath, 'r', encoding="utf-8")
-        fileData = file.read()
-        file.close()
-        data = yaml.load(fileData)
-        for s in data['services'].keys():
-            if s != "defaultArtifact" :
-                serviceVersion = data['services'][s]['version']
-                data['services'][s]['version'] = "local:" + serviceVersion
-        
-        
-        data = yaml.dump(data)
-        print(data)
-        os.system("rm -fr " + self.filePath)
-        f = open(self.filePath, 'a')
-        f.write(data)
-        f.close()
-
     def main(self):
         self.CreateTagFile()
         self.CreateServiceConf()
-        # self.UpdateBomVersionFile()
 
 
 
