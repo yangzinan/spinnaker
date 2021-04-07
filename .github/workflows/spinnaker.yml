@@ -28,7 +28,7 @@ jobs:
 #         sleep 5
 #         hal -v    
 #     ## 
-    - name: 01-使用Halyard获取bom版本文件
+    - name: 01- Get bom file
       run: |
         docker pull registry.cn-beijing.aliyuncs.com/spinnaker-cd/halyard:1.32.0
         docker run -itd -p 8084:8084 -p 9000:9000 --name halyard  registry.cn-beijing.aliyuncs.com/spinnaker-cd/halyard:1.32.0
@@ -41,25 +41,23 @@ jobs:
         docker cp halyard:/opt/${SPINNAKER_VERSION}.yml ./${SPINNAKER_VERSION}.yml
         mkdir -p ${BOM_DIR}
 
-    - name: 02-1-获取gcr.io镜像
+    - name: 02- Get config file
       run: |
         python3 fileprocess.py ${SPINNAKER_VERSION}.yml  ${TAG_FILE} ${BOM_DIR} 
         tree ${BOM_DIR}
-      
-        # echo  -e "\033[32m  ---> Tag File ---> \033[0m"
-        # cat ${TAG_FILE}
-        # docker login -u ${{ secrets.DOCKER_USER}} -p ${{ secrets.DOCKER_PASSWD}} ${NEW_REGISTRY_URL}
-        for tag in $(cat ${TAG_FILE})
-        do 
-           echo  -e "\033[32m  ---> pull ---> ${REGISTRY_URL}${tag} \033[0m"
-          #  docker pull ${REGISTRY_URL}${tag}
+        mkdir -p default/service-settings
+        for i in $(cat ${TAG_FILE}); do
+          file_name=$(echo $i | awk -F ':' {'print$1'})
+          echo "artifactId: registry.cn-beijing.aliyuncs.com/niu-idc/$i" > $file_name.yml
         done
 
-    - name: 03- 收集镜像tag文件和下载镜像的脚本
+    - name: 03- Collection files
       run : |
         mkdir -p artifacts/${SPINNAKER_VERSION}
         mv ${BOM_DIR} artifacts/${SPINNAKER_VERSION}/
-        mkdir -p artifacts/${SPINNAKER_VERSION}/${BOM_DIR}/bom  
+        mkdir -p artifacts/${SPINNAKER_VERSION}/${BOM_DIR}/bom
+        mv ${SPINNAKER_VERSION}.yml artifacts/${SPINNAKER_VERSION}/${BOM_DIR}/bom/ 
+        mv default artifacts/
     
     - uses: actions/upload-artifact@v2
       with: 
