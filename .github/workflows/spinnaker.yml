@@ -51,6 +51,7 @@ jobs:
         mv halyard.yaml artifacts/${SPINNAKER_VERSION}/
         mv halyard.sh artifacts/${SPINNAKER_VERSION}/
         mv ${TAG_FILE} artifacts/${SPINNAKER_VERSION}/
+        mv install.sh artifacts/${SPINNAKER_VERSION}/
     
     - uses: actions/upload-artifact@v2
       with: 
