@@ -18,6 +18,7 @@ function GetImages(){
         docker tag ${REGISTRY}/${i}
         docker push ${REGISTRY}/${i}
     done
+    sed -i "s#${REGISTRY}#gcr.azk8s.cn/spinnaker-marketplace#g" halyard.yaml
     
 }
 
@@ -42,9 +43,6 @@ function Install(){
     -it registry.cn-beijing.aliyuncs.com/spinnaker-cd/halyard:1.32.0
 
     sleep 5
-    if [ ${REGISTRY} != '' ]; then
-        sed -i "s#${REGISTRY}#gcr.azk8s.cn/spinnaker-marketplace#g" halyard.yaml
-    fi
 
     sed -i "s#DECK_HOST_VAL#${DECK_HOST}#g" halyard.sh
     sed -i "s#GATE_HOST_VAL#${GATE_HOST}#g" halyard.sh
@@ -79,6 +77,9 @@ function Ingress(){
 
 
 case $1 in 
+  clean)
+    Clean
+    ;;
   getimg)
     GetImages
     ;;
