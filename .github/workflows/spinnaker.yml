@@ -48,6 +48,8 @@ jobs:
         mkdir -p artifacts/${SPINNAKER_VERSION}/${BOM_DIR}/bom
         mv ${SPINNAKER_VERSION}.yml artifacts/${SPINNAKER_VERSION}/${BOM_DIR}/bom/ 
         mv default artifacts/${SPINNAKER_VERSION}/
+        echo "====look config======"
+        ls -a /home/spinnaker/.hal/config
     
     - uses: actions/upload-artifact@v2
       with: 
