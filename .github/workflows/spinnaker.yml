@@ -39,6 +39,18 @@ jobs:
         docker exec -u root halyard chmod +x /opt/getbom.sh
         docker exec -u root halyard sh /opt/getbom.sh ${SPINNAKER_VERSION}
         docker cp halyard:/opt/${SPINNAKER_VERSION}.yml ./${SPINNAKER_VERSION}.yml
-        mkdir -p .boms
-        cat ./${SPINNAKER_VERSION}.yml
-        ls /
+        mkdir -p ${BOM_DIR}
+
+    - name: 02-1-获取gcr.io镜像
+      run: |
+        python3 tools/fileprocess.py ${SPINNAKER_VERSION}.yml  ${TAG_FILE} ${BOM_DIR} 
+        ls ${BOM_DIR}
+      
+        # echo  -e "\033[32m  ---> Tag File ---> \033[0m"
+        # cat ${TAG_FILE}
+        # docker login -u ${{ secrets.DOCKER_USER}} -p ${{ secrets.DOCKER_PASSWD}} ${NEW_REGISTRY_URL}
+        for tag in $(cat ${TAG_FILE})
+        do 
+           echo  -e "\033[32m  ---> pull ---> ${REGISTRY_URL}${tag} \033[0m"
+           docker pull ${REGISTRY_URL}${tag}
+        done
