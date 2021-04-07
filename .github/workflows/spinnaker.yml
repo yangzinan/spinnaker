@@ -41,3 +41,4 @@ jobs:
         docker cp halyard:/opt/${SPINNAKER_VERSION}.yml ./${SPINNAKER_VERSION}.yml
         mkdir -p .boms
         cat ./${SPINNAKER_VERSION}.yml
+        ls
