@@ -39,7 +39,6 @@ jobs:
         docker exec -u root halyard chmod +x /opt/getbom.sh
         docker exec -u root halyard sh /opt/getbom.sh ${SPINNAKER_VERSION}
         docker cp halyard:/opt/${SPINNAKER_VERSION}.yml ./${SPINNAKER_VERSION}.yml
-        docker exec -u root halyard ls -a ~/
         mkdir -p ${BOM_DIR}
 
     - name: 02-1-获取gcr.io镜像
@@ -55,3 +54,14 @@ jobs:
            echo  -e "\033[32m  ---> pull ---> ${REGISTRY_URL}${tag} \033[0m"
           #  docker pull ${REGISTRY_URL}${tag}
         done
+
+    - name: 03- 收集镜像tag文件和下载镜像的脚本
+      run : |
+        mkdir -p artifacts/${SPINNAKER_VERSION}
+        mv ${BOM_DIR} artifacts/${SPINNAKER_VERSION}/
+        mkdir -p artifacts/${SPINNAKER_VERSION}/${BOM_DIR}/bom  
+    
+    - uses: actions/upload-artifact@v2
+      with: 
+        name: ${{ env.SPINNAKER_VERSION }}-Install-Scripts
+        path: artifacts/*    
