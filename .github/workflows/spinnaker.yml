@@ -43,7 +43,7 @@ jobs:
 
     - name: 02-1-获取gcr.io镜像
       run: |
-        python3 tools/fileprocess.py ${SPINNAKER_VERSION}.yml  ${TAG_FILE} ${BOM_DIR} 
+        python3 fileprocess.py ${SPINNAKER_VERSION}.yml  ${TAG_FILE} ${BOM_DIR} 
         ls ${BOM_DIR}
       
         # echo  -e "\033[32m  ---> Tag File ---> \033[0m"
