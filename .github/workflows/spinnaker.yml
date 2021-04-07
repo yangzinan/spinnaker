@@ -43,6 +43,7 @@ jobs:
 
     - name: 03- Collection files
       run : |
+        sed -i "s#${SPINNAKER_VERSION}#SPIN_VERSION#g" install.sh
         mkdir -p artifacts/${SPINNAKER_VERSION}
         mv ${BOM_DIR} artifacts/${SPINNAKER_VERSION}/
         mkdir -p artifacts/${SPINNAKER_VERSION}/${BOM_DIR}/bom

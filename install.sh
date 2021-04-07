@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="1.23.6"
+VERSION="SPIN_VERSION"
 BOMS_DIR="/root/.hal/"
 KUBE_DIR="/root/.kube/"
 DECK_HOST="spinnaker.xxx.xxx"
