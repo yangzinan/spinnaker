@@ -1,0 +1,21 @@
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: spinnaker
+spec:
+  rules:
+  - host: deck_domain
+    http:
+     paths:
+     - path: /
+       backend:
+          serviceName: spin-deck
+          servicePort: 9000
+  - host: gate_domain
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: spin-gate
+          servicePort: 8084
