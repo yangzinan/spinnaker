@@ -1,0 +1,42 @@
+name: Spinnaker Pre Install
+env:
+  SPINNAKER_VERSION: 1.23.6
+  REGISTRY_URL: "gcr.io/spinnaker-marketplace/"
+  NEW_REGISTRY_URL: "registry.cn-beijing.aliyuncs.com/spinnaker-cd/"
+  NEW_REGISTRY_URL2: "docker.io/spinnakercd/"
+  TAG_FILE: "tagfile.txt"
+  BOM_DIR: ".boms"
+
+on:
+  push:
+    paths:
+      - '.github/workflows/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+      
+    ##
+#     - name: 01-安装Halyard部署工具
+#       run: |
+#         chmod +x ./InstallHalyard.sh
+#         ls 
+#         sleep 2
+#         sudo bash -x InstallHalyard.sh --user runner -y
+#         sleep 5
+#         hal -v    
+#     ## 
+    - name: 01-使用Halyard获取bom版本文件
+      run: |
+        docker pull registry.cn-beijing.aliyuncs.com/spinnaker-cd/halyard:1.32.0
+        docker run -itd -p 8084:8084 -p 9000:9000 --name halyard  registry.cn-beijing.aliyuncs.com/spinnaker-cd/halyard:1.32.0
+        sleep 5
+        docker ps | grep halyard 
+        chmod +x getbom.sh
+        docker cp getbom.sh halyard:/opt/getbom.sh
+        docker exec -u root halyard chmod +x /opt/getbom.sh
+        docker exec -u root halyard sh /opt/getbom.sh ${SPINNAKER_VERSION}
+        docker cp halyard:/opt/${SPINNAKER_VERSION}.yml ./${SPINNAKER_VERSION}.yml
+        mkdir -p .boms
