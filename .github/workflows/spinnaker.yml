@@ -40,3 +40,4 @@ jobs:
         docker exec -u root halyard sh /opt/getbom.sh ${SPINNAKER_VERSION}
         docker cp halyard:/opt/${SPINNAKER_VERSION}.yml ./${SPINNAKER_VERSION}.yml
         mkdir -p .boms
+        cat ./${SPINNAKER_VERSION}.yml
