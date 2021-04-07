@@ -106,7 +106,7 @@ class SpinnakerToDo(object):
         f.close()
 
     def main(self):
-        # self.CreateTagFile()
+        self.CreateTagFile()
         self.CreateServiceConf()
         # self.UpdateBomVersionFile()
 

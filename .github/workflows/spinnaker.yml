@@ -48,7 +48,7 @@ jobs:
         mkdir -p default/service-settings
         for i in $(cat ${TAG_FILE}); do
           file_name=$(echo $i | awk -F ':' {'print$1'})
-          echo "artifactId: registry.cn-beijing.aliyuncs.com/niu-idc/$i" > $file_name.yml
+          echo "artifactId: registry.cn-beijing.aliyuncs.com/niu-idc/$i" > default/service-settings/$file_name.yml
         done
 
     - name: 03- Collection files
